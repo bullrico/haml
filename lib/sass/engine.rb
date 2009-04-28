@@ -96,6 +96,7 @@ module Sass
       @template = template
       @environment = Environment.new(nil, @options)
       @environment.set_var("important", Script::String.new("!important"))
+      @environment.set_var("server_name", Script::String.new(@options[:server_name]))
     end
 
     # Processes the template and returns the result as a string.

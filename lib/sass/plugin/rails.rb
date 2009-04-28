@@ -1,10 +1,18 @@
 unless defined?(Sass::RAILS_LOADED)
   Sass::RAILS_LOADED = true
 
+  if ENV['RAILS_ENV'] == 'development'
+    config = YAML.load_file("#{RAILS_ROOT}/config/development.yml")
+    Sass::Plugin.options[:server_name] = config['callback_url']
+  else
+    Sass::Plugin.options[:server_name] = ENV["SERVER_NAME"]
+  end
+  
   Sass::Plugin.options.merge!(:template_location  => RAILS_ROOT + '/public/stylesheets/sass',
                               :css_location       => RAILS_ROOT + '/public/stylesheets',
                               :always_check       => RAILS_ENV != "production",
-                              :full_exception     => RAILS_ENV != "production")
+                              :full_exception     => RAILS_ENV != "production",
+                              :always_update      => RAILS_ENV != "production")
 
   # :stopdoc:
   module ActionController
